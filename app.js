@@ -14,10 +14,11 @@ nunjucks.configure('views', {noCache: true});
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, '/public')));
-// app.use('/', routes);
+// is the same as, since path has been required:
+app.use(express.static(__dirname + '/node_modules'));
 
 app.use('/', routes);
 
