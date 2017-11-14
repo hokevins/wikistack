@@ -1,6 +1,9 @@
 var Sequelize = require('sequelize');
 var db = new Sequelize('postgres://localhost:5432/wikistack');
 
+// const p = Page.build({title: "My New Page"});
+// p.save(); // {title: "My New Page", urlTitle: "My_New_Page"};
+
 const Page = db.define('page', {
   title: {  // these are the 'attribute' parameters for our Page model
     type: Sequelize.STRING, // STRING's default is 255 characters
@@ -19,12 +22,16 @@ const Page = db.define('page', {
   }
 }, { // these are the 'options' parameters of Page
   getterMethods: {
-    route() {
+    route: function() {
       return '/wiki/' + this.urlTitle;
+    },
+    renderedContent: function() {
+      // used for mark down styling
+      return marked(this.content);
     }
   },
   hooks: {
-    beforeValidate: function(page, options) {
+    beforeValidate: function(page, options) { // options parameter not necessary or used here
       if (page.title) {
       page.urlTitle = page.title.trim().replace(/\s+/g, '_').replace(/\W/g, '');
     } else {

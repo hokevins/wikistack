@@ -34,11 +34,11 @@ router.get('/:urlTitle', function(req, res, next) {
       urlTitle: req.params.urlTitle
     }
   })
-  .then(function(foundPage) {
+  .then(function(data) {
     res.render('wikipage', {
-      title: foundPage[0].title,
-      pageContent: foundPage[0].content,
-      urlTitle: foundPage[0].urlTitle
+      title: data[0].title,
+      content: data[0].content,
+      urlTitle: data[0].urlTitle
     });
   })
   .catch(function(error) {
