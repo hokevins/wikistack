@@ -37,7 +37,7 @@ router.get('/:urlTitle', function(req, res, next) {
   .then(function(data) {
     res.render('wikipage', {
       title: data[0].title,
-      content: data[0].content,
+      pageContent: data[0].content,
       urlTitle: data[0].urlTitle
     });
   })
