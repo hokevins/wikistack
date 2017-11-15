@@ -28,6 +28,13 @@ models.db.sync({force: true})
     console.log('The collective is listening on port 1337:');
   });
 })
-.catch(function(error) {
-  console.error(error); // Should it be .catch(console.error); instead of CB?
+.catch(console.error); // Should it be .catch(console.error); instead of CB?
+
+app.use(function (err, req, res, next) {
+  //if there is no error.status already set, we are defaulting to 500
+  err.status = err.status || 500;
+  err.message = err.message || 'Internal Error';
+  res.render('error', {err});
 });
+
+
