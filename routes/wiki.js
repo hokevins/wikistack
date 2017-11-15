@@ -21,12 +21,14 @@ router.get('/add', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
+  var tagsArray = req.body.tags.trim().split(' ');
   var user = User.findOrCreate({where: {name: req.body.author, email: req.body.email}});
   var userinstance;
   var page = Page.create({
     title: req.body.title,
     content: req.body.content,
-    status: req.body.status
+    status: req.body.status,
+    tags: tagsArray
   });
 
   user
@@ -57,8 +59,10 @@ router.get('/:urlTitle', function(req, res, next) {
     if (page === null) {
         res.status(404).send();
     } else {
+        var tagsString = page.tags.join(', ');
         res.render('wikipage', {
-            page: page
+            page: page,
+            tags: tagsString
         });
     }
   })

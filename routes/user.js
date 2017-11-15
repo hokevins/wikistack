@@ -22,7 +22,6 @@ router.get('/:userId', function(req, res, next) {
   });
   Promise.all([user, pages])
   .then(function(data) {
-    console.log('????????????????')
     res.render('user', {user: data[0], pages: data[1]});
   })
   .catch(next);

@@ -19,6 +19,9 @@ const Page = db.define('page', {
   },
   status: {
     type: Sequelize.ENUM('open', 'closed') // Enumerated Values where fields can only be 1 or the other, aka public or private page
+  },
+  tags: {
+    type: Sequelize.ARRAY(Sequelize.TEXT)
   }
 }, { // these are the 'options' parameters of Page
   getterMethods: {
