@@ -1,5 +1,6 @@
 var Sequelize = require('sequelize');
-var db = new Sequelize('postgres://localhost:5432/wikistack');
+var db = new Sequelize('postgres://localhost:5432/wikistack', { logging: false });
+var marked = require('marked');
 
 // const p = Page.build({title: "My New Page"});
 // p.save(); // {title: "My New Page", urlTitle: "My_New_Page"};
@@ -41,8 +42,21 @@ const Page = db.define('page', {
         page.urlTitle = Math.random().toString(36).substring(2, 7);
       }
     }
-  }
+  },
 });
+
+Page.prototype.findSimilar = function () {
+            return Page.findAll({
+                where: {
+                    id: {
+                        $ne: this.id
+                    },
+                    tags: {
+                        $overlap: this.tags
+                    }
+                }
+            });
+        };
 
 const User = db.define('user', {
   name: {

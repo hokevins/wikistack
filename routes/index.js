@@ -7,3 +7,7 @@ module.exports = router;
 
 router.use('/wiki', wikiRouter);
 router.use('/users', userRouter);
+
+router.get('/search', function(req, res, next) {
+  res.render('search');
+});

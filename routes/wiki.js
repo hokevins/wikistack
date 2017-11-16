@@ -4,9 +4,42 @@ var models = require('../models');
 var Page = models.Page;
 var User = models.User;
 
+
+// Destructuring assignment
+
+//var {Page, User} = require('../models');
+
+
+//other examples:
+
+// const myObj  = {name: "Cassio", age: 30};
+
+
+// const name = myObj.name;
+// const age = myObj.age;
+
+// const {name, age} = myObj;
+
+
 module.exports = router;
 //router.get('/name/activity')
 //router.get('/name')
+
+router.get('/search', function(req, res, next) {
+  var tags = req.query.tags.trim().split(' ');
+  Page.findAll({
+    // $overlap matches a set of possibilities
+    where : {
+        tags: {
+            $overlap: tags
+        }
+    }
+  })
+  .then(function(similarPagesArray){
+    res.render('index', { foundPages: similarPagesArray });
+  })
+  .catch(next);
+});
 
 router.get('/', function(req, res, next) {
   Page.findAll()
@@ -43,13 +76,28 @@ router.post('/', function(req, res, next) {
   .catch(next);
 });
 
+router.get('/:urlTitle/similar', function(req, res, next) {
+  Page.findOne({
+    where: {
+        urlTitle: req.params.urlTitle
+    }
+  })
+  .then(function (page) {
+    return page.findSimilar();
+  })
+  .then(function(similarPages) {
+    res.render('index', { foundPages: similarPages });
+  })
+  .catch(next);
+});
+
 
 router.get('/:urlTitle', function(req, res, next) {
   Page.findOne({
     where: {
         urlTitle: req.params.urlTitle
     },
-    include: [
+    include: [ // include is the "join" in SQL
         {model: User, as: 'author'}
     ]
   })
