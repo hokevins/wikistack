@@ -41,6 +41,6 @@ app.use(function (err, req, res, next) {
   //if there is no error.status already set, we are defaulting to 500
   err.status = err.status || 500;
   err.message = err.message || 'Internal Error';
-  res.render('error', {err});
+  res.render('error', {error: err});
 });
 

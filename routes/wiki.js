@@ -36,6 +36,7 @@ router.get('/search', function(req, res, next) {
     }
   })
   .then(function(similarPagesArray){
+    console.log('???????????????????', similarPagesArray);
     res.render('index', { foundPages: similarPagesArray });
   })
   .catch(next);
